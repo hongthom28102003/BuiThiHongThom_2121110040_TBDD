@@ -4,7 +4,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import { useDispatch, useSelector } from "react-redux";
 import { byToCart } from "../../redux/cartSlice";
-
+import Toast from "react-native-toast-message";
 const Product = ({ data }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -15,22 +15,26 @@ const Product = ({ data }) => {
     const product = {
       id: data.id,
       title: data.title,
-      image: data.image,
+      image: data.thumbnail,
       price: data.price,
-      
     };
     dispatch(byToCart(product));
+    Toast.show({
+      type: "success",
+      text1: "Add to cart successfully",
+      text2: "This is your first product 👋",
+    });
   };
   return (
     <TouchableOpacity
       onPress={handlePressProduct}
       className="mr-2  w-44 bg-[#ffff] p-2 rounded-md overflow-hidden"
     >
-      <View className="relative bg-white h-max w-max">
+      <View className="relative bg-white h-44 w-max">
         <Image
           resizeMode="contain"
-          className="w-full h-52"
-          source={{ uri: data.image }}
+          className="w-full h-full"
+          source={{ uri: data.thumbnail }}
         />
         <Image
           className=" w-5 h-5  absolute top-2 right-2 rounded-full bg-white"

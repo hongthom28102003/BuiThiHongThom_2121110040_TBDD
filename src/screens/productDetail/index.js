@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import { Image } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome"; // Để sử dụng icon
+import { useDispatch } from "react-redux";
+import { byToCart } from "../../redux/cartSlice";
 import Feauted from "../home/Feauted";
 
 export const ProductDetail = ({ route }) => {
@@ -23,9 +25,10 @@ export const ProductDetail = ({ route }) => {
   const scrollToTop = () => {
     scrollViewRef.current.scrollTo({ y: 0, animated: true });
   };
+  const dispatch = useDispatch();
   useEffect(() => {
     axios
-      .get(`https://fakestoreapi.com/products/${id}`)
+      .get(`https://dummyjson.com/products/${id}`)
       .then(function (response) {
         setData(response.data);
         scrollToTop();
@@ -37,8 +40,8 @@ export const ProductDetail = ({ route }) => {
       .finally(function () {
         // always executed
       });
-    axios.get(`https://fakestoreapi.com/products`).then(function (response) {
-      setFeauted(response.data);
+    axios.get(`https://dummyjson.com/products`).then(function (response) {
+      setFeauted(response.data.products);
     });
   }, [id]);
   const handlePressMinus = () => {
@@ -48,6 +51,16 @@ export const ProductDetail = ({ route }) => {
   };
   const handlePressPlus = () => {
     setQty(qty + 1);
+  };
+  const handleAddToCart = () => {
+    const product = {
+      id: data.id,
+      title: data.title,
+      image: data.thumbnail,
+      price: data.price,
+    };
+    dispatch(byToCart(product));
+    navigation.navigate("Cart");
   };
   return (
     <View className="px-5  h-[100vh] mt-14 relative">
@@ -83,7 +96,7 @@ export const ProductDetail = ({ route }) => {
               className="w-full h-full"
               width={"100%"}
               resizeMode="contain"
-              source={{ uri: data.image }}
+              source={{ uri: data.thumbnail }}
             ></Image>
           </View>
         </View>
@@ -135,7 +148,10 @@ export const ProductDetail = ({ route }) => {
           <Text className="text-xl text-center font-bold basis-1/2">
             ${data.price}
           </Text>
-          <TouchableOpacity className="bg-yellow-500 w-40 py-3 rounded-lg">
+          <TouchableOpacity
+            onPress={handleAddToCart}
+            className="bg-yellow-500 w-40 py-3 rounded-lg"
+          >
             <Text className="text-white text-center font-bold">
               Add To Cart
             </Text>

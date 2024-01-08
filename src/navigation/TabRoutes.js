@@ -4,9 +4,11 @@ import pathRouter from "../constants/navigationString";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeStack from "./HomeStack";
 import Icon from "react-native-vector-icons/Ionicons"; // Để sử dụng icon
+import Icon2 from "react-native-vector-icons/FontAwesome5"; // Để sử dụng icon
 import FontAwesome from "react-native-vector-icons/FontAwesome"; // Để sử dụng icon
 import Categories from "../screens/categories";
 import CartScreen from "../screens/cart";
+import SettingScreen from "../screens/setting";
 
 const Tab = createBottomTabNavigator();
 const TabRoutes = () => {
@@ -40,12 +42,12 @@ const TabRoutes = () => {
         }}
       />
       <Tab.Screen
-        name={"Search"}
+        name={"Live"}
         component={Categories}
         options={{
           tabBarIcon: ({ focused }) => {
             return (
-              <Icon name="search" size={25} color={focused ? "red" : "gray"} />
+              <Icon name="heart" size={25} color={focused ? "red" : "gray"} />
             );
           },
         }}
@@ -63,7 +65,7 @@ const TabRoutes = () => {
       />
       <Tab.Screen
         name={"User"}
-        component={Categories}
+        component={SettingScreen}
         options={{
           tabBarIcon: ({ focused }) => {
             return (

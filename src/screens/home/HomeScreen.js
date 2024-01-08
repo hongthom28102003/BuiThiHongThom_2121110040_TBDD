@@ -12,9 +12,9 @@ import axios from "axios";
 const HomeScreen = () => {
   const [data, setData] = React.useState([]);
   axios
-    .get("https://fakestoreapi.com/products")
+    .get("https://dummyjson.com/products")
     .then(function (response) {
-      setData(response.data);
+      setData(response.data.products);
     })
     .catch(function (error) {
       // handle error
@@ -23,7 +23,7 @@ const HomeScreen = () => {
     .finally(function () {
       // always executed
     });
-  
+
   return (
     <ScrollView className="">
       <View className=" px-3 my-10 mb-52 bg-[#fdebeb]">
