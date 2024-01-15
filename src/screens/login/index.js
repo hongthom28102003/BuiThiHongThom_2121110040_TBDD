@@ -1,70 +1,58 @@
-import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import React from "react";
+import React, { useCallback } from "react";
 import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
 import Toast from "react-native-toast-message";
 import { useDispatch } from "react-redux";
-import { setIsLogin } from "../../redux/userSlice";
+import { setIsLogin, setUser } from "../../redux/userSlice";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [data, setData] = React.useState({
-    username: "",
+    email: "",
     password: "",
   });
-  const [user, setUser] = React.useState({
-    username: "thom203",
-    password: "123456",
-  });
+  const [users, setUsers] = React.useState([]);
+  useFocusEffect(
+    useCallback(() => {
+      AsyncStorage.getItem("user").then((value) => {
+        if (value) {
+          setUsers(JSON.parse(value));
+          console.log(JSON.parse(value));
+        }
+      });
+    }, [])
+  );
   const handlePressLogin = () => {
     // Thực hiện xác thực và đăng nhập ở đây
-    if (data.username === user.username) {
-      if (data.password === user.password) {
-        Toast.show({
-          type: "success",
-          text1: "Login success",
-        });
+    const user = users.find((item) => item.email === data.email);
+    if (user) {
+      if (user.password === data.password) {
         dispatch(setIsLogin(true));
+        dispatch(setUser(user));
         navigation.navigate("Home");
       } else {
         Toast.show({
           type: "error",
-          text1: "Password incorrect",
+          text1: "Wrong password",
         });
       }
     } else {
       Toast.show({
         type: "error",
-        text1: "Username incorrect",
+        text1: "User not found",
       });
     }
-    // axios
-    //   .post("https://fakestoreapi.com/auth/login", { ...data })
-    //   .then(function (response) {
-    //     Toast.show({
-    //       type: "success",
-    //       text1: "Login success",
-    //     });
-    //     navigation.navigate("Home");
-    //   })
-    //   .catch(function (error) {
-    //     Toast.show({
-    //       type: "error",
-    //       text1: "Username or password incorrect",
-    //     });
-    //   })
-    //   .finally(function () {
-    //     // always executed
-    //   });
   };
   return (
     <View className="mt-10 px-5">
       <Text className="text-2xl text-center">Login</Text>
       <View>
         <TextInput
-          onChangeText={(text) => setData({ ...data, username: text })}
-          value={data.username}
+          onChangeText={(text) => setData({ ...data, email: text })}
+          value={data.email}
           className="bg-gray-200 py-5 px-5 rounded-xl mt-20"
           placeholder="Email"
         />
@@ -83,6 +71,15 @@ const LoginScreen = () => {
             Login
           </Text>
         </TouchableOpacity>
+        <View className="text-center flex flex-row gap-2 mt-5">
+          <Text>Dont not Account </Text>
+          <TouchableOpacity
+            className=""
+            onPress={() => navigation.navigate("Signup")}
+          >
+            <Text className="text-blue-400">Signup</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

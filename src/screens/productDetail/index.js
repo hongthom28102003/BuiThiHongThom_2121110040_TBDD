@@ -27,22 +27,15 @@ export const ProductDetail = ({ route }) => {
   };
   const dispatch = useDispatch();
   useEffect(() => {
-    axios
-      .get(`https://dummyjson.com/products/${id}`)
-      .then(function (response) {
-        setData(response.data);
-        scrollToTop();
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .finally(function () {
-        // always executed
-      });
-    axios.get(`https://dummyjson.com/products`).then(function (response) {
-      setFeauted(response.data.products);
-    });
+    const fetchData = async () => {
+      const response1 = await axios.get(`https://dummyjson.com/products/${id}`);
+      setData(response1.data);
+      const response2 = await axios.get(
+        `https://dummyjson.com/products/category/${response1.data.category}`
+      );
+      setFeauted(response2.data.products);
+    };
+    fetchData();
   }, [id]);
   const handlePressMinus = () => {
     if (qty > 1) {
@@ -64,7 +57,11 @@ export const ProductDetail = ({ route }) => {
   };
   return (
     <View className="px-5  h-[100vh] mt-14 relative">
-      <ScrollView ref={scrollViewRef} className="mb-28">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        ref={scrollViewRef}
+        className="mb-28"
+      >
         <View>
           <View className="flex flex-row justify-between items-center">
             <TouchableOpacity
@@ -111,9 +108,7 @@ export const ProductDetail = ({ route }) => {
             <FontAwesome name="star" size={20} color="#f1c40f"></FontAwesome>
             <FontAwesome name="star" size={20} color="#f1c40f"></FontAwesome>
             <FontAwesome name="star" size={20} color="#ccc"></FontAwesome>
-            <Text className="text-lg text-gray-500">
-              {data.rating?.rate}/5.0 ({data.rating?.count} Reviews)
-            </Text>
+            <Text className="text-lg text-gray-500">{data.rating} / 5</Text>
           </View>
           <View className="flex flex-row items-center mt-3">
             <TouchableOpacity

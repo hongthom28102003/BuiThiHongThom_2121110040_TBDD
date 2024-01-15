@@ -28,7 +28,7 @@ const Product = ({ data }) => {
   return (
     <TouchableOpacity
       onPress={handlePressProduct}
-      className="mr-2  w-44 bg-[#ffff] p-2 rounded-md overflow-hidden"
+      className="mr-2 mb-2  w-44 bg-[#ffff] p-2 rounded-md overflow-hidden"
     >
       <View className="relative bg-white h-44 w-max">
         <Image
@@ -41,11 +41,12 @@ const Product = ({ data }) => {
           source={require("../../assets/images/heart-svgrepo-com.png")}
         />
       </View>
-      <View className="px-5 mt-2">
+      <View className="px-1 mt-2">
+        <Text className="mb-1 text-gray-500">{data.brand}</Text>
         <Text className="text-md font-bold h-14 text-sm overflow-hidden">
           {data.title}
         </Text>
-        <View className="text-base flex text-red-400 font-medium mt-2">
+        <View className="text-base flex text-red-400 font-medium ">
           <Text className="text-base font-medium mt-2">${data.price}</Text>
           <TouchableOpacity
             onPress={handlePressToCart}

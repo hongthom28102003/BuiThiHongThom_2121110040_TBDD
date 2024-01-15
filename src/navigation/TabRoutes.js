@@ -6,6 +6,7 @@ import HomeStack from "./HomeStack";
 import Icon from "react-native-vector-icons/Ionicons"; // Để sử dụng icon
 import Icon2 from "react-native-vector-icons/FontAwesome5"; // Để sử dụng icon
 import FontAwesome from "react-native-vector-icons/FontAwesome"; // Để sử dụng icon
+import Entypo from "react-native-vector-icons/Entypo"; // Để sử dụng icon
 import Categories from "../screens/categories";
 import CartScreen from "../screens/cart";
 import SettingScreen from "../screens/setting";
@@ -42,12 +43,12 @@ const TabRoutes = () => {
         }}
       />
       <Tab.Screen
-        name={"Live"}
+        name={"Products"}
         component={Categories}
         options={{
           tabBarIcon: ({ focused }) => {
             return (
-              <Icon name="heart" size={25} color={focused ? "red" : "gray"} />
+              <Entypo name="grid" size={30} color={focused ? "red" : "gray"} />
             );
           },
         }}
