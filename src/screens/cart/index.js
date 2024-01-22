@@ -11,14 +11,27 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome"; // Để sử dụng icon
 import Ionicons from "react-native-vector-icons/Ionicons"; // Để sử dụng icon
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Cart from "./Cart";
-
+import Toast from "react-native-toast-message";
+import { setCartList } from "../../redux/cartSlice";
 const CartScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch()
   const [data, setData] = useState([]);
   const { cartAr } = useSelector((state) => state.cart);
-
+  const handlePressCheckout = () => {
+    if (cartAr.length > 0) {
+      navigation.navigate("Checkout");
+      dispatch(setCartList([]));
+    }
+    else{
+      Toast.show({
+        type: "error",
+        text1: "Cart is empty",
+      })
+    }
+  }
   return (
     <View className="  mt-14 relative ">
       <View className="flex px-5 flex-row justify-between items-center">
@@ -66,7 +79,7 @@ const CartScreen = () => {
             </Text>
           </View>
         </View>
-        <TouchableOpacity className="bg-red-500 mt-5 py-3 rounded-full">
+        <TouchableOpacity onPress={handlePressCheckout} className="bg-red-500 mt-5 py-3 rounded-full">
           <Text className="text-center text-white font-semibold text-base">
             Checkout
           </Text>

@@ -8,6 +8,7 @@ import LoginScreen from "../screens/login";
 import SearchScreen from "../screens/search";
 import Signup from "../screens/singup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CheckoutPage from "../screens/checkout";
 const Stack = createNativeStackNavigator();
 
 const Routes = () => {
@@ -30,6 +31,7 @@ const Routes = () => {
         <Stack.Screen component={LoginScreen} name={"Login"} />
         <Stack.Screen component={SearchScreen} name={"Search"} />
         <Stack.Screen component={Signup} name={"Signup"} />
+        <Stack.Screen component={CheckoutPage} name={"Checkout"} />
       </Stack.Navigator>
       <Toast />
     </NavigationContainer>
